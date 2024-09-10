@@ -1,4 +1,5 @@
-[![stars-badge](https://img.shields.io/github/stars/gao-lab/PASSAGE-dev?logo=GitHub&color=yellow)](https://github.com/gao-lab/PASSAGE-dev/stargazers)
+[![stars-badge](https://img.shields.io/github/stars/gao-lab/PASSAGE?logo=GitHub&color=yellow)](https://github.com/gao-lab/PASSAGE/stargazers)
+[![python-badge](https://img.shields.io/badge/Python-3.10-blue.svg)]({[linkUrl](https://www.python.org/downloads/release/python-31013/)})
 [![license-badge](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
@@ -6,19 +7,6 @@
 Learning phenotype associated signature in spatial transcriptomics with PASSAGE
 ![Model architecture](./model.png)
 
-## File Structure
-```
-PASSAGE
-├─data                         # Dataset collection
-├─docs                         # Documentation files
-│  ├─api
-│  ├─tutorials                 # jupyter notebook tutorials
-│  ├─_static
-│  └─_templates
-└─PASSAGE                      # Main Python package
-    ├─model
-    └─viz
-```
 
 ## Environment
 ```
@@ -33,6 +21,9 @@ cd PASSAGE
 python setup.py build
 python setup.py install
 ```
+## Tutorial
+For implementation, please see the jupyter-notebook example [here](./tutorial/tutorial.ipynb)
+
 
 ## Citations
 ```
