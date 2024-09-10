@@ -22,7 +22,7 @@ python setup.py build
 python setup.py install
 ```
 ## Tutorial
-For implementation, please see the jupyter-notebook example [here](./tutorial/tutorial.ipynb)
+For usage, please see the jupyter-notebook example [here](./tutorial/tutorial.ipynb).
 
 
 ## Citations
