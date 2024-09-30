@@ -26,5 +26,5 @@ For usage, please see the jupyter-notebook example [here](./tutorial/tutorial.ip
 
 
 ## Citations
-Guo, C.-K., Xia, C.-R., Peng, G., Cao, Z.-J. & Gao, G. Learning phenotype associated signature in spatial transcriptomics with PASSAGE. bioRxiv 2024.09.06.611564 (2024) doi:10.1101/2024.09.06.611564.
+Guo, C.-K., Xia, C.-R., Peng, G., Cao, Z.-J. & Gao, G. Learning phenotype associated signature in spatial transcriptomics with PASSAGE. _bioRxiv_ (2024) doi:[10.1101/2024.09.06.611564](https://doi.org/10.1101/2024.09.06.611564).
 
