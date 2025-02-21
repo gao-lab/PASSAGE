@@ -11,6 +11,7 @@ import torch
 import torch.nn as nn
 from torch.nn.utils import weight_norm, clip_grad_norm_
 from .model import PASSAGE
+from ..viz.utils import map
 
 
 def get_free_gpu() -> int:
@@ -81,9 +82,9 @@ def run_PASSAGE(single_graphs:Optional[str]='./dataset/single/',
                 pretrain_epochs:Optional[int]=40,
                 contrastive_epochs:Optional[int]=10,
                 GATE_hidden_size_1:Optional[int]=128,
-                GATE_hidden_size_2:Optional[int]=16,
+                GATE_hidden_size_2:Optional[int]=64,
                 attention_pool_size:Optional[int]=16,
-                dropout_rate:Optional[int]=0.3,
+                dropout_rate:Optional[int]=0.1,
                 weight_decay:Optional[int]=5*10**-4,
                 gradient_clip_norm:Optional[int]=3,
                 lr:Optional[int]=0.001,
@@ -144,3 +145,45 @@ def run_PASSAGE(single_graphs:Optional[str]='./dataset/single/',
     torch.save(model, save_model+'PASSAGE_model.pt')
     print(f'The trained model was save at {save_model}'+'PASSAGE_model.pt')
     return model
+
+def estimate_gene_score(model, adata, remove_MT_RP:Optional[bool]=True):
+    new_data = transform2dict3(adata)
+    abstract_features, _ = model.GATE(new_data['features_1'], new_data['edge_index_1'])
+    abstract_features = model.MLP(abstract_features)
+    attention_score, _ = model.attention(abstract_features)
+    attention_score = attention_score.detach().numpy().reshape(-1)
+    attention_score = map(attention_score, 0, 1)
+
+    gene_expression = adata.X.toarray()
+    score_array = np.array(attention_score).reshape(-1,1).T
+    
+    mean_value = np.median(score_array)
+    score_array[score_array<mean_value] = 0
+    
+    gene_score_matrix = score_array@gene_expression
+    gene_score_matrix = gene_score_matrix.T
+                           
+    gene_names = adata.var_names
+    score_names = ['gene attention score']
+    gene_score_df = pd.DataFrame(gene_score_matrix, index=gene_names, columns=score_names)
+    
+    if remove_MT_RP:
+        gene_score_df = gene_score_df[~gene_score_df.index.str.startswith('MT-')]
+        gene_score_df = gene_score_df[~gene_score_df.index.str.startswith('RP')]
+        
+    sorted_gene_score_df = gene_score_df.sort_values(by=score_names, ascending=False)
+
+    return sorted_gene_score_df
+
+def estimate_multi_gene_score(model, adata_lists):
+    gene_names = adata_lists[0].var_names
+    multi_df = pd.DataFrame([0]*len(gene_names), index=gene_names, columns=['rank'])
+    for adata in adata_lists:
+        single_df = estimate_gene_score(model, adata)
+        single_df['rank'] = range(1, len(single_df.index)+1)
+        multi_df['rank'] = multi_df['rank']+single_df['rank']
+    
+    multi_df['rank'] = multi_df['rank']/len(adata_lists)
+    multi_df = multi_df.sort_values(by='rank', ascending=True)
+    
+    return multi_df
