@@ -5,7 +5,7 @@
 
 # PASSAGE
 Learning phenotype associated signature in spatial transcriptomics with PASSAGE
-![Model architecture](./model.png)
+
 
 
 ## Environment
