@@ -22,7 +22,7 @@ python setup.py build
 python setup.py install
 ```
 ## Tutorial
-For usage, please see the jupyter-notebook example [here](./tutorial/tutorial.ipynb).
+For usage, please see the jupyter-notebook example [here](./tutorial/tutorial.ipynb). The data used in the tutorial is available in the jupyter-notebook and the following figshare link: https://figshare.com/articles/dataset/tutorial_data_of_PASSAGE_model/28539134.
 
 
 ## Citations
